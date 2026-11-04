@@ -1,0 +1,7 @@
+# Produktion på VM'en: bruger færdigbygget image fra GHCR i stedet for `build:`
+services:
+  app:
+    image: ghcr.io/${GHCR_OWNER}/tek2-demo-app:latest
+    ports:
+      - "80:8080"
+    restart: unless-stopped

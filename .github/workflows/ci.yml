@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test: # et job = kører på sin egen friske VM (runner)
+    runs-on: ubuntu-latest
+    steps: # steps = kører i rækkefølge på samme runner
+      # Hash-pinnet: en tag (v4.2.2) kan flyttes, et commit-SHA kan ikke.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # `run:` = en shell-kommando. `verify` kører compile, test og package.
+      - run: mvn -B verify

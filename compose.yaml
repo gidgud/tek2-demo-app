@@ -1,0 +1,23 @@
+# Lokal udvikling: `docker compose up -d --build`
+name: tek2-demo
+
+services:
+  app:
+    build: .                    # byg image fra Dockerfile i denne mappe
+    ports:
+      - "8080:8080"             # host:container - åben på ALLE netkort på hosten
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4            # færdigt image fra Docker Hub - ingen Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: demo
+    ports:
+      - "127.0.0.1:3307:3306"   # kun localhost:3307 på hosten -> 3306 i containeren
+    volumes:
+      - db-data:/var/lib/mysql  # data overlever `docker compose down`
+
+volumes:
+  db-data:
